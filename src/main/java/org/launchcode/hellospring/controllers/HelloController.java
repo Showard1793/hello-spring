@@ -1,5 +1,6 @@
 package org.launchcode.hellospring.controllers;
 
+import ch.qos.logback.core.model.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,30 +22,22 @@ public class HelloController {
     }
 
     //handle requests of the form http://localhost:8080/hello?name=LaunchCode
-    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, value = "hello")
-    @ResponseBody
-    public String helloWithQueryParam(@RequestParam String name){
-        return "Hello, " + name + "!";
+    @RequestMapping(value = "hello", method = {RequestMethod.GET, RequestMethod.POST})
+    public String hello(@RequestParam String name, Model model){
+        String greeting = "Hello, " + name + "!";
+        model.addText("greeting");
+        return "hello" ;
     }
 
     //handle requests of the form http://localhost:8080/hello/LaunchCode
     @GetMapping("hello/{name}")
-    @ResponseBody
-    public String helloWithPathParam(@PathVariable String name){
+    public String helloAgain(@PathVariable String name){
         return "Hello, " + name + "!";
     }
 
     @GetMapping("form")
-    @ResponseBody
     public String helloForm() {
-        return "<html>" +
-                "<body>" +
-                "<form action = 'hello' method = 'post'>" + // submit a request to /hello
-                "<input type = 'text' name = 'name' >" +
-                "<input type = 'submit' value = 'Greet Me!' >" +
-                "</form>" +
-                "</body>" +
-                "</html>";
+        return "form";
     }
 
 }
